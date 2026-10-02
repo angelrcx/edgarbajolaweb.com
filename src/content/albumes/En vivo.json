@@ -4,8 +4,10 @@
   "portada": "../../assets/musica/album4.jpg",
   "descripcion": "Texto corto sobre el álbum.",
   "links": [
-    { "plataforma": "Spotify", "url": "https://open.spotify.com/" },
-    { "plataforma": "Apple Music", "url": "https://music.apple.com/" },
-    { "plataforma": "YouTube", "url": "https://youtube.com/" }
+    { "plataforma": "Bandcamp", "url": "https://edgarbajoelagua.bandcamp.com/album/en-vivo-vol-1" }
+    { "plataforma": "Spotify", "url": "https://open.spotify.com/intl-es/album/4Hjkn9PfNmxSZLBjuO8ulL" },
+    { "plataforma": "Apple Music", "url": "https://music.apple.com/us/album/en-vivo-vol-1-en-vivo/6777706722" },
+    { "plataforma": "YouTube", "url": "https://www.youtube.com/watch?v=1Drd5arB538" },
+    { "plataforma": "Tidal", "url": "https://tidal.com/album/529930919/u"}
   ]
 }

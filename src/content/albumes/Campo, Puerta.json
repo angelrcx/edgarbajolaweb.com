@@ -4,8 +4,10 @@
   "portada": "../../assets/musica/album5.png",
   "descripcion": "Texto corto sobre el álbum.",
   "links": [
-    { "plataforma": "Spotify", "url": "https://open.spotify.com/" },
-    { "plataforma": "Apple Music", "url": "https://music.apple.com/" },
-    { "plataforma": "YouTube", "url": "https://youtube.com/" }
+    { "plataforma": "Bandcamp", "url": "https://edgarbajoelagua.bandcamp.com/album/campo-puerta" }
+    { "plataforma": "Spotify", "url": "https://open.spotify.com/intl-es/album/0QWG4XQ0Uy0i2QaamccjjG" },
+    { "plataforma": "Apple Music", "url": "https://music.apple.com/us/album/campo-puerta/6795305669" },
+    { "plataforma": "YouTube", "url": "https://www.youtube.com/watch?v=E5dRD3bIUjI" },
+    { "plataforma": "Tidal", "url": "https://tidal.com/album/546911355/u"}
   ]
 }
