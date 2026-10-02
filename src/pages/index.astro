@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import FondoVideo from '../components/FondoVideo.astro';
+
 const secciones = [
   { href: '/musica', label: 'Música' },
   { href: '/fotografia', label: 'Fotografía' },
@@ -10,6 +12,7 @@ const secciones = [
 ];
 ---
 <BaseLayout titulo="Nombre del artista" bar={false}>
+  <FondoVideo />
   <h1 class="logo">Nombre</h1>
   <section class="home">
     <article class="intro">
