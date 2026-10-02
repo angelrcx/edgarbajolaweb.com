@@ -1,7 +1,7 @@
 {
-  "titulo": "Álbum 2",
-  "anio": 2021,
-  "portada": "../../assets/musica/album-2.svg",
+  "titulo": "III",
+  "anio": 2025,
+  "portada": "../../assets/musica/album3.jpeg",
   "descripcion": "Texto corto sobre el álbum.",
   "links": [
     { "plataforma": "Spotify", "url": "https://open.spotify.com/" },

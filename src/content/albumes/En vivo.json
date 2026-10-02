@@ -1,7 +1,7 @@
 {
-  "titulo": "Álbum 3",
-  "anio": 2022,
-  "portada": "../../assets/musica/album-3.svg",
+  "titulo": "En vivo (vol.1)[en vivo]",
+  "anio": 2026,
+  "portada": "../../assets/musica/album4.jpg",
   "descripcion": "Texto corto sobre el álbum.",
   "links": [
     { "plataforma": "Spotify", "url": "https://open.spotify.com/" },

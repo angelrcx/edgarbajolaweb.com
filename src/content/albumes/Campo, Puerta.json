@@ -1,7 +1,7 @@
 {
-  "titulo": "Álbum 4",
-  "anio": 2023,
-  "portada": "../../assets/musica/album-4.svg",
+  "titulo": "Campo, Puerta",
+  "anio": 2026,
+  "portada": "../../assets/musica/album5.png",
   "descripcion": "Texto corto sobre el álbum.",
   "links": [
     { "plataforma": "Spotify", "url": "https://open.spotify.com/" },
