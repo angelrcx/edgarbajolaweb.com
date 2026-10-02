@@ -4,7 +4,7 @@
   "portada": "../../assets/musica/album3.jpeg",
   "descripcion": "Texto corto sobre el álbum.",
   "links": [
-    { "plataforma": "Bandcamp", "url": "https://edgarbajoelagua.bandcamp.com/album/iii" }
+    { "plataforma": "Bandcamp", "url": "https://edgarbajoelagua.bandcamp.com/album/iii" },
     { "plataforma": "Spotify", "url": "https://open.spotify.com/intl-es/album/06pFNFPnFGxswcfLUbwbO8" },
     { "plataforma": "Apple Music", "url": "https://music.apple.com/us/album/iii/1840781028" },
     { "plataforma": "YouTube", "url": "https://www.youtube.com/watch?v=DWGFfuZPPII" },
