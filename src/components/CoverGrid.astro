@@ -1,0 +1,14 @@
+---
+import { Image } from 'astro:assets';
+const { items, base } = Astro.props;
+---
+<ul class="scatter">
+  {items.map((it) => (
+    <li>
+      <a href={`${base}/${it.id}`}>
+        <Image src={it.data.portada} alt={`Portada de ${it.data.titulo}`} width={600} loading="lazy" />
+        <span>{it.data.titulo}, {it.data.anio}</span>
+      </a>
+    </li>
+  ))}
+</ul>

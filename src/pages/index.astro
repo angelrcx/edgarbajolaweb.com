@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const secciones = [
+  { href: '/musica', label: 'Música' },
+  { href: '/fotografia', label: 'Fotografía' },
+  { href: '/poemario', label: 'Poemario' },
+  { href: '/arte-grafico', label: 'Arte gráfico' },
+  { href: '/produccion', label: 'Producción musical' },
+  { href: '/proyectos-alternos', label: 'Proyectos alternos' },
+];
+---
+<BaseLayout titulo="Nombre del artista" bar={false}>
+  <h1 class="logo">Nombre</h1>
+  <section class="home">
+    <article class="intro">
+      <p>Aquí va la introducción escrita, en primera persona, como en tu sitio personal.</p>
+    </article>
+    {secciones.map((s) => <a class="tile" href={s.href}>{s.label}</a>)}
+  </section>
+</BaseLayout>

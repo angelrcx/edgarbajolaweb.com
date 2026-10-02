@@ -1,0 +1,11 @@
+{
+  "titulo": "Edgar bajo el agua",
+  "anio": 2024,
+  "portada": "../../assets/musica/album-1.svg",
+  "descripcion": "Texto corto sobre el álbum.",
+  "links": [
+    { "plataforma": "Spotify", "url": "https://open.spotify.com/" },
+    { "plataforma": "Apple Music", "url": "https://music.apple.com/" },
+    { "plataforma": "YouTube", "url": "https://youtube.com/" }
+  ]
+}

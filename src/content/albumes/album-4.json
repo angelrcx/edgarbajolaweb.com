@@ -1,0 +1,11 @@
+{
+  "titulo": "Álbum 4",
+  "anio": 2023,
+  "portada": "../../assets/musica/album-4.svg",
+  "descripcion": "Texto corto sobre el álbum.",
+  "links": [
+    { "plataforma": "Spotify", "url": "https://open.spotify.com/" },
+    { "plataforma": "Apple Music", "url": "https://music.apple.com/" },
+    { "plataforma": "YouTube", "url": "https://youtube.com/" }
+  ]
+}

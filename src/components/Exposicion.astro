@@ -1,0 +1,89 @@
+---
+import { Image, getImage } from 'astro:assets';
+import '../styles/expo.css';
+const { items, categorias = [] } = Astro.props;
+const grandes = await Promise.all(items.map((it) => getImage({ src: it.data.imagen, width: 1600 })));
+---
+<div class="expo" data-expo>
+  {categorias.length > 0 && (
+    <div class="filtros" role="group" aria-label="Filtros">
+      <button type="button" data-filtro="todo" aria-pressed="true">Todo</button>
+      {categorias.map((c) => <button type="button" data-filtro={c.id} aria-pressed="false">{c.label}</button>)}
+    </div>
+  )}
+
+  <ul class="expo-grid">
+    {items.map((it, i) => (
+      <li data-cat={it.data.categoria} data-full={grandes[i].src}>
+        <button type="button" data-abrir>
+          <Image src={it.data.imagen} alt={it.data.alt ?? it.data.titulo} width={500} loading="lazy" />
+          <span>{it.data.titulo}{it.data.anio ? `, ${it.data.anio}` : ''}</span>
+        </button>
+      </li>
+    ))}
+  </ul>
+
+  <dialog class="visor" data-visor aria-label="Visor de imágenes">
+    <button type="button" class="cerrar" data-cerrar aria-label="Cerrar">&times;</button>
+    <figure>
+      <img data-visor-img alt="" />
+      <figcaption data-visor-cap></figcaption>
+    </figure>
+    <div class="expo-controls">
+      <button type="button" data-prev aria-label="Anterior">&lsaquo;</button>
+      <span data-count aria-live="polite"></span>
+      <button type="button" data-next aria-label="Siguiente">&rsaquo;</button>
+    </div>
+  </dialog>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-expo]').forEach((root) => {
+    const celdas = [...root.querySelectorAll<HTMLElement>('.expo-grid li')];
+    const visor = root.querySelector<HTMLDialogElement>('[data-visor]')!;
+    const img = visor.querySelector<HTMLImageElement>('[data-visor-img]')!;
+    const cap = visor.querySelector('[data-visor-cap]')!;
+    const count = visor.querySelector('[data-count]')!;
+    let lista: HTMLElement[] = [];
+    let i = 0;
+
+    // Filtros: ocultar/mostrar celdas; la cuadrícula se reacomoda sola
+    const botones = root.querySelectorAll<HTMLButtonElement>('[data-filtro]');
+    botones.forEach((b) => b.addEventListener('click', () => {
+      const f = b.dataset.filtro;
+      botones.forEach((o) => o.setAttribute('aria-pressed', String(o === b)));
+      celdas.forEach((c) => (c.hidden = f !== 'todo' && c.dataset.cat !== f));
+    }));
+
+    // Visor: navega solo entre las celdas visibles
+    const mostrar = (n: number) => {
+      i = (n + lista.length) % lista.length;
+      const c = lista[i];
+      const mini = c.querySelector('img')!;
+      img.src = c.dataset.full!;
+      img.alt = mini.alt;
+      cap.textContent = c.querySelector('span')!.textContent;
+      count.textContent = `${i + 1} / ${lista.length}`;
+    };
+    celdas.forEach((c) => c.querySelector('[data-abrir]')!.addEventListener('click', () => {
+      lista = celdas.filter((x) => !x.hidden);
+      mostrar(lista.indexOf(c));
+      visor.showModal();
+    }));
+    visor.querySelector('[data-prev]')!.addEventListener('click', () => mostrar(i - 1));
+    visor.querySelector('[data-next]')!.addEventListener('click', () => mostrar(i + 1));
+    visor.querySelector('[data-cerrar]')!.addEventListener('click', () => visor.close());
+    visor.addEventListener('click', (e) => { if (e.target === visor) visor.close(); });
+    document.addEventListener('keydown', (e) => {
+      if (!visor.open) return;
+      if (e.key === 'ArrowLeft') mostrar(i - 1);
+      if (e.key === 'ArrowRight') mostrar(i + 1);
+    });
+    let x0 = 0;
+    visor.addEventListener('touchstart', (e) => (x0 = e.touches[0].clientX), { passive: true });
+    visor.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].clientX - x0;
+      if (Math.abs(dx) > 50) mostrar(i + (dx < 0 ? 1 : -1));
+    });
+  });
+</script>

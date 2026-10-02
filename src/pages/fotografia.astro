@@ -1,0 +1,7 @@
+---
+import { getCollection } from 'astro:content';
+import ExpoLayout from '../layouts/ExpoLayout.astro';
+const items = (await getCollection('fotografia')).sort((a, b) => a.data.orden - b.data.orden);
+---
+<ExpoLayout titulo="Fotografía" items={items} descripcion="Ciber exposición de fotografía"
+  categorias={[{ id: "analoga", label: "Análogas" }, { id: "digital", label: "Digitales" }]} />

@@ -1,0 +1,7 @@
+---
+import { getCollection } from 'astro:content';
+import ExpoLayout from '../layouts/ExpoLayout.astro';
+const items = (await getCollection('arte-grafico')).sort((a, b) => a.data.orden - b.data.orden);
+---
+<ExpoLayout titulo="Arte gráfico" items={items} descripcion="Ciber exposición de dibujos y flyers"
+  categorias={[{ id: "dibujo", label: "Dibujos" }, { id: "flyer", label: "Flyers" }, { id: "diseno", label: "Diseños" }]} />

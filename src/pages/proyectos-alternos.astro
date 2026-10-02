@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const proyectos = [
+  { nombre: 'Proyecto alterno 1', texto: 'Descripción breve.', url: 'https://example.com' },
+  { nombre: 'Proyecto alterno 2', texto: 'Descripción breve.', url: 'https://example.com' },
+];
+---
+<BaseLayout titulo="Proyectos alternos">
+  <h1 class="titulo">Proyectos alternos</h1>
+  <section class="texto">
+    <p>Introducción escrita sobre los proyectos alternos.</p>
+    <ul class="links">
+      {proyectos.map((p) => (
+        <li><a href={p.url} target="_blank" rel="noopener"><strong>{p.nombre}</strong><br />{p.texto}</a></li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>

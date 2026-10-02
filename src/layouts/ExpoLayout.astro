@@ -1,0 +1,9 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Exposicion from '../components/Exposicion.astro';
+const { titulo, items, descripcion, categorias = [] } = Astro.props;
+---
+<BaseLayout titulo={titulo} descripcion={descripcion}>
+  <h1 class="titulo">{titulo}</h1>
+  {items.length ? <Exposicion items={items} categorias={categorias} /> : <p class="vacio">Aún no hay obras publicadas.</p>}
+</BaseLayout>

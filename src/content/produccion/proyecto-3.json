@@ -1,0 +1,10 @@
+{
+  "titulo": "Proyecto 3",
+  "artista": "Nombre del artista",
+  "anio": 2025,
+  "portada": "../../assets/produccion/proyecto-3.svg",
+  "roles": ["Producción", "Mezcla"],
+  "descripcion": "Información del proyecto",
+  "creditos": ["Producción: Edgar", "Mezcla: Nombre", "Master: Nombre"],
+  "links": [{ "plataforma": "Spotify", "url": "https://open.spotify.com/" }]
+}

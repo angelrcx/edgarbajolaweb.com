@@ -1,0 +1,28 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+export async function getStaticPaths() {
+  const todos = await getCollection('produccion');
+  return todos.map((p) => ({ params: { proyecto: p.id }, props: { p } }));
+}
+const { p } = Astro.props;
+const d = p.data;
+---
+<BaseLayout titulo={`${d.titulo} — ${d.artista}`} descripcion={d.descripcion}>
+  <article class="album">
+    <Image src={d.portada} alt={`Portada de ${d.titulo}`} width={900} />
+    <div>
+      <h1>{d.titulo} <small>{d.anio}</small></h1>
+      <p>{d.artista}{d.roles.length ? ` · ${d.roles.join(', ')}` : ''}</p>
+      {d.descripcion && <p>{d.descripcion}</p>}
+      {d.creditos.length > 0 && <ul class="creditos">{d.creditos.map((c) => <li>{c}</li>)}</ul>}
+      {d.links.length > 0 && (
+        <ul class="links">
+          {d.links.map((l) => <li><a href={l.url} target="_blank" rel="noopener">{l.plataforma}</a></li>)}
+        </ul>
+      )}
+      <a href="/produccion">Volver</a>
+    </div>
+  </article>
+</BaseLayout>
