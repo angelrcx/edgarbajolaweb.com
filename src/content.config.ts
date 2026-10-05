@@ -3,36 +3,23 @@ import { glob } from 'astro/loaders';
 
 const links = z.array(z.object({ plataforma: z.string(), url: z.string().url() }));
 
-const albumes = defineCollection({
-  loader: glob({ pattern: '*.json', base: './src/content/albumes' }),
-  schema: ({ image }) => z.object({
-    titulo: z.string(),
-    anio: z.number(),
-    portada: image(),
-    descripcion: z.string().optional(),
-    links,
-  }),
-});
-
-// Esquema compartido por fotografía y arte gráfico (ambas son exposiciones)
-const obra = (cats: [string, ...string[]]) => ({ image }: { image: () => any }) => z.object({
-  categoria: z.enum(cats),
+// Música y proyectos alternos comparten estructura
+const ficha = ({ image }: { image: () => any }) => z.object({
   titulo: z.string(),
-  anio: z.number().optional(),
-  imagen: image(),
-  alt: z.string().optional(),
-  descripcion: z.string().optional(),
-  orden: z.number().default(0),
+  orden: z.number().default(999), // 1 = primero
+  anio: z.number(),
+  portada: image(),
+  links,
 });
 
-const fotografia = defineCollection({
-  loader: glob({ pattern: '*.json', base: './src/content/fotografia' }),
-  schema: obra(['analoga', 'digital']),
+const albumes = defineCollection({
+  loader: glob({ pattern: '*.md', base: './src/content/albumes' }),
+  schema: ficha,
 });
 
-const arteGrafico = defineCollection({
-  loader: glob({ pattern: '*.json', base: './src/content/arte-grafico' }),
-  schema: obra(['dibujo', 'flyer', 'diseno']),
+const alternos = defineCollection({
+  loader: glob({ pattern: '*.md', base: './src/content/alternos' }),
+  schema: ficha,
 });
 
 const produccion = defineCollection({
@@ -49,4 +36,4 @@ const produccion = defineCollection({
   }),
 });
 
-export const collections = { albumes, fotografia, 'arte-grafico': arteGrafico, produccion };
+export const collections = { albumes, alternos, produccion };

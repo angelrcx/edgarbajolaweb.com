@@ -1,14 +1,19 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import FondoVideo from '../components/FondoVideo.astro';
 
+const imagenes = import.meta.glob<{ default: ImageMetadata }>('../assets/menu/*.{webp,png,jpg,jpeg,svg}', { eager: true });
+const buscar = (nombre: string) =>
+  Object.entries(imagenes).find(([ruta]) => ruta.includes(`/${nombre}.`))?.[1].default;
+
 const secciones = [
-  { href: '/musica', label: 'Música' },
-  { href: '/fotografia', label: 'Fotografía' },
-  { href: '/poemario', label: 'Poemario' },
-  { href: '/arte-grafico', label: 'Arte gráfico' },
-  { href: '/produccion', label: 'Producción musical' },
-  { href: '/proyectos-alternos', label: 'Proyectos alternos' },
+  { href: '/musica', imagen: 'musica', label: 'Música' },
+  { href: '/fotografia', imagen: 'fotografia', label: 'Fotografía' },
+  { href: '/poemario', imagen: 'poemario', label: 'Poemario' },
+  { href: '/arte-grafico', imagen: 'arte-grafico', label: 'Arte gráfico' },
+  { href: '/produccion', imagen: 'produccion', label: 'Producción musical' },
+  { href: '/proyectos-alternos', imagen: 'proyectos-alternos', label: 'Proyectos alternos' },
 ];
 ---
 <BaseLayout titulo="Edgar Bajo la Web" bar={false}>
@@ -16,8 +21,14 @@ const secciones = [
   <h1 class="logo">Edgar Bajo la Web</h1>
   <section class="home">
     <article class="intro">
-      <p>introduccion escrita ....</p>
+      <p>MOTIVO:
+Soy un poco errático al momento de publicar lo que hago, y las redes sociales no ayudan. Con el algoritmo actual, subes algo a Instagram y, si no llama la atención de inmediato, rápidamente queda sepultado bajo otras diez toneladas de contenido que se publican diariamente. Siento que lo que hago necesita verse sin la presión de tener que cambiar rápidamente de página. Pienso que, si le otorgo paciencia a mi obra, me gustaría recibir lo mismo. De ahí la creación de este lugar. Un espacio para quedarse, para mirar sin que estén llegando notificaciones que gritan: «¡Ábreme ahora!». Aquí puedes vagar con tranquilidad, sin necesidad de interactuar más que con el corazón. Una cueva cibernética, me gustaría pensar. :-)
+</p>
     </article>
-    {secciones.map((s) => <a class="tile" href={s.href}>{s.label}</a>)}
+    {secciones.map((s) => (
+      <a class="tile" href={s.href}>
+        {buscar(s.imagen) ? <Image src={buscar(s.imagen)!} alt={s.label} width={600} /> : s.label}
+      </a>
+    ))}
   </section>
 </BaseLayout>

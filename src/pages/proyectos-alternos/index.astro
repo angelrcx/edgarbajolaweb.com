@@ -1,0 +1,11 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CoverGrid from '../../components/CoverGrid.astro';
+const proyectos = (await getCollection('alternos'))
+  .sort((a, b) => a.data.orden - b.data.orden || a.data.titulo.localeCompare(b.data.titulo));
+---
+<BaseLayout titulo="Proyectos alternos">
+  <h1 class="titulo">Proyectos alternos</h1>
+  <CoverGrid items={proyectos} base="/proyectos-alternos" />
+</BaseLayout>

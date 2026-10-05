@@ -1,7 +1,8 @@
 ---
 import { Image, getImage } from 'astro:assets';
 import '../styles/expo.css';
-const { items, categorias = [] } = Astro.props;
+const { items, categorias = [], filas = false } = Astro.props;
+const pies = items.map((it) => [[it.data.titulo, it.data.anio].filter(Boolean).join(', '), it.data.descripcion].filter(Boolean).join(' — '));
 const grandes = await Promise.all(items.map((it) => getImage({ src: it.data.imagen, width: 1600 })));
 ---
 <div class="expo" data-expo>
@@ -12,12 +13,12 @@ const grandes = await Promise.all(items.map((it) => getImage({ src: it.data.imag
     </div>
   )}
 
-  <ul class="expo-grid">
+  <ul class={filas ? "expo-grid filas" : "expo-grid"}>
     {items.map((it, i) => (
-      <li data-cat={it.data.categoria} data-full={grandes[i].src}>
+      <li data-cat={it.data.categoria} data-full={grandes[i].src} data-cap={pies[i]} style={`--ar:${it.data.imagen.width / it.data.imagen.height}`}>
         <button type="button" data-abrir>
-          <Image src={it.data.imagen} alt={it.data.alt ?? it.data.titulo} width={500} loading="lazy" />
-          <span>{it.data.titulo}{it.data.anio ? `, ${it.data.anio}` : ''}</span>
+          <Image src={it.data.imagen} alt={it.data.alt ?? it.data.titulo ?? 'Obra'} width={filas ? 800 : 500} loading="lazy" />
+          <span>{[it.data.titulo, it.data.anio].filter(Boolean).join(', ')}</span>
         </button>
       </li>
     ))}
@@ -62,7 +63,7 @@ const grandes = await Promise.all(items.map((it) => getImage({ src: it.data.imag
       const mini = c.querySelector('img')!;
       img.src = c.dataset.full!;
       img.alt = mini.alt;
-      cap.textContent = c.querySelector('span')!.textContent;
+      cap.textContent = c.dataset.cap ?? '';
       count.textContent = `${i + 1} / ${lista.length}`;
     };
     celdas.forEach((c) => c.querySelector('[data-abrir]')!.addEventListener('click', () => {

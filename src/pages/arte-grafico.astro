@@ -1,7 +1,10 @@
 ---
-import { getCollection } from 'astro:content';
 import ExpoLayout from '../layouts/ExpoLayout.astro';
-const items = (await getCollection('arte-grafico')).sort((a, b) => a.data.orden - b.data.orden);
+import { aObras } from '../lib/galeria';
+
+// Las subcarpetas de src/assets/arte-grafico/ son los filtros: portadas, dibujos, flyers
+const obras = import.meta.glob('../assets/arte-grafico/*/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}', { eager: true });
+const items = aObras(obras as any, ['portadas', 'dibujos', 'flyers']);
 ---
-<ExpoLayout titulo="Arte gráfico" items={items} descripcion="Ciber exposición de dibujos y flyers"
-  categorias={[{ id: "dibujo", label: "Dibujos" }, { id: "flyer", label: "Flyers" }, { id: "diseno", label: "Diseños" }]} />
+<ExpoLayout titulo="Arte gráfico" items={items} descripcion="Ciber exposición de dibujos, portadas y flyers"
+  categorias={[{ id: 'portadas', label: 'Portadas' }, { id: 'dibujos', label: 'Dibujos' }, { id: 'flyers', label: 'Flyers' }]} />

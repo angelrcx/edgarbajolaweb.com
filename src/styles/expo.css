@@ -26,3 +26,15 @@
 .expo-controls button { background: none; border: 1px solid #333; color: var(--fg); font: inherit; font-size: 1.4rem; width: 2.8rem; height: 2.8rem; cursor: pointer; }
 .expo-controls button:hover { border-color: var(--accent); }
 .expo-controls button:focus-visible, .cerrar:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* Modo filas: renglones completos con fotos de cualquier proporción */
+.expo-grid.filas { display: flex; flex-wrap: wrap; gap: .5rem; }
+.expo-grid.filas li { --h: 120px; height: var(--h); flex-grow: calc(var(--ar) * 100); flex-basis: calc(var(--ar) * var(--h)); }
+.expo-grid.filas button { height: 100%; }
+.expo-grid.filas img { width: 100%; height: 100%; object-fit: cover; }
+.expo-grid.filas span { display: none; }
+.expo-grid.filas::after { content: ""; flex-grow: 1000000; } /* la última fila no se estira */
+@media (min-width: 700px) { .expo-grid.filas li { --h: 220px; } }
+
+/* Sin título ni descripción: no dejar huecos */
+.expo-grid span:empty, .visor figcaption:empty { display: none; }
