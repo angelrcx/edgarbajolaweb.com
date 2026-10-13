@@ -6,7 +6,7 @@ const { entrada, Content, volver } = Astro.props;
 const d = entrada.data;
 ---
 <article class="album">
-  <Image src={d.portada} alt={`Portada de ${d.titulo}`} width={900} />
+  {d.portada && <Image src={d.portada} alt={`Portada de ${d.titulo}`} width={900} />}
   <div>
     <h1>{d.titulo}{d.anio && <small> {d.anio}</small>}</h1>
     {d.artista && <p class="artista">{d.artista}</p>}

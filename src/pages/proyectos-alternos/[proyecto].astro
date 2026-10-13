@@ -3,7 +3,8 @@ import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Ficha from '../../components/Ficha.astro';
 export async function getStaticPaths() {
-  const todos = await getCollection('alternos');
+  // los proyectos con `enlace` van directo al enlace y no necesitan página de detalle
+  const todos = (await getCollection('alternos')).filter((e) => !e.data.enlace);
   return todos.map((e) => ({ params: { proyecto: e.id }, props: { e } }));
 }
 const { e } = Astro.props;

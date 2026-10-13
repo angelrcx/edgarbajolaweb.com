@@ -31,6 +31,7 @@ img { max-width: 100%; height: auto; display: block; }
 .portadas img { width: 100%; aspect-ratio: 1; object-fit: cover; }
 .portadas span { display: block; margin-top: .4rem; font-size: .85rem; color: var(--muted); }
 .portadas a:hover span { color: var(--fg); }
+.portadas small { display: block; font-size: .75rem; margin-top: .1rem; }
 @media (min-width: 700px) { .portadas { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2.5rem 2rem; } }
 
 /* Página de álbum */

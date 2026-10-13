@@ -10,7 +10,7 @@ const proyectos = (await getCollection('produccion')).sort((a, b) => a.data.orde
     {proyectos.map((p) => (
       <li>
         <a class="fila" href={`/produccion/${p.id}`}>
-          <Image src={p.data.portada} alt="" width={160} loading="lazy" />
+          {p.data.portada && <Image src={p.data.portada} alt="" width={160} loading="lazy" />}
           <span class="fila-texto">
             <span class="fila-titulo">{p.data.titulo}</span>
             {p.data.artista && <span class="fila-artista">{p.data.artista}</span>}

@@ -1,14 +1,38 @@
 ---
 import { Image } from 'astro:assets';
+import { idYoutube } from '../lib/youtube';
 const { items, base } = Astro.props;
 ---
 <ul class="portadas">
-  {items.map((it) => (
-    <li>
-      <a href={`${base}/${it.id}`}>
-        <Image src={it.data.portada} alt={`Portada de ${it.data.titulo}`} width={600} loading="lazy" />
-        <span>{[it.data.titulo, it.data.anio].filter(Boolean).join(', ')}</span>
-      </a>
-    </li>
-  ))}
+  {items.map((it) => {
+    // Con `enlace`, la portada lleva directo al enlace (sin página de detalle).
+    // Si además no hay `portada`, se usa la miniatura del video de YouTube.
+    const externo = Boolean(it.data.enlace);
+    const ytId = !it.data.portada && externo ? idYoutube(it.data.enlace) : null;
+    return (
+      <li>
+        <a
+          href={externo ? it.data.enlace : `${base}/${it.id}`}
+          {...(externo ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+        >
+          {it.data.portada ? (
+            <Image src={it.data.portada} alt={`Portada de ${it.data.titulo}`} width={600} loading="lazy" />
+          ) : (
+            <img
+              src={`https://i.ytimg.com/vi/${ytId}/maxresdefault.jpg`}
+              alt={`Miniatura de ${it.data.titulo}`}
+              width="1280"
+              height="720"
+              loading="lazy"
+              onerror={`this.onerror=null;this.src='https://i.ytimg.com/vi/${ytId}/hqdefault.jpg'`}
+            />
+          )}
+          <span>
+            {externo ? it.data.titulo : [it.data.titulo, it.data.anio].filter(Boolean).join(', ')}
+            {it.data.artista && <small>{it.data.artista}</small>}
+          </span>
+        </a>
+      </li>
+    );
+  })}
 </ul>
