@@ -3,7 +3,7 @@ titulo: "EP1"
 artista: "Metal yami"
 rol: "Grabación, mezcla y masterización"
 orden: 5
-portada: "../../assets/produccion/metal.png"
+portada: "../../assets/produccion/Metal.png"
 links:
   - { plataforma: "Bandcamp", url: "https://metalyami.bandcamp.com/album/ep1-2" }
   - { plataforma: "Spotify", url: "https://open.spotify.com/intl-es/album/0cSujUPKploR0ccDQhZ6aC" }

@@ -2,7 +2,7 @@
 titulo: "EP1, METAL YAMI"
 orden: 2
 anio: 2025
-portada: "../../assets/alternos/metal.png"
+portada: "../../assets/alternos/Metal.png"
 links:
   - { plataforma: "Bandcamp", url: "https://metalyami.bandcamp.com/album/ep1-2" }
   - { plataforma: "Spotify", url: "https://open.spotify.com/intl-es/album/0cSujUPKploR0ccDQhZ6aC" }
