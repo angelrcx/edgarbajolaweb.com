@@ -1,14 +1,14 @@
 ---
-titulo: "Culto La aluzada"
+titulo: "Culto La Aluzada: Unión estatal de experimentacion sonora del cerro Proaño y su Basílica de Guadalupe"
 orden: 1
 anio: 2026
 portada: "../../assets/musica/album6.jpg"
 links:
-  - { plataforma: "Bandcamp", url: "https://edgarbajoelagua.bandcamp.com/album/campo-puerta" }
-  - { plataforma: "Spotify", url: "https://open.spotify.com/intl-es/album/0QWG4XQ0Uy0i2QaamccjjG" }
-  - { plataforma: "Apple Music", url: "https://music.apple.com/us/album/campo-puerta/6795305669" }
-  - { plataforma: "YouTube", url: "https://www.youtube.com/watch?v=E5dRD3bIUjI" }
-  - { plataforma: "Tidal", url: "https://tidal.com/album/546911355/u" }
+  - { plataforma: "Bandcamp", url: "https://edgarbajoelagua.bandcamp.com/album/culto-la-aluzada-uni-n-estatal-de-experimentacion-sonora-del-cerro-proa-o-y-su-bas-lica-de-guadalupe" }
+  - { plataforma: "Spotify", url: "https://open.spotify.com/intl-es/album/6YxHPN3JArYmmCr9NqgP41?si=7gJvoXIKT3quSq4tAk7T8g" }
+  - { plataforma: "Apple Music", url: "https://music.apple.com/us/album/culto-la-aluzada-unión-estatal-de-experimentación/6820532563" }
+  - { plataforma: "YouTube", url: "https://www.youtube.com/watch?v=OMqEkNixKdw&list=OLAK5uy_n-YELvlB2OJPTQtHW40Z4NtzkrHs_898w" }
+  - { plataforma: "Tidal", url: "https://tidal.com/album/568015561/u" }
 ---
 
 Segundo disco colaborativo de 2026.

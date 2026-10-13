@@ -8,9 +8,9 @@ img { max-width: 100%; height: auto; display: block; }
 .logo { text-align: center; font-size: 1.6rem; font-weight: 400; margin: 0 0 2rem; }
 .titulo { font-size: 1.1rem; font-weight: 400; margin: 0 0 2rem; }
 
-/* Índice: mosaico disperso */
+/* Índice: celular = 2 columnas; PC = anillo 3x3 con el título al centro */
 .home { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; max-width: 1000px; margin: 0 auto; align-items: start; }
-.intro { grid-column: 1 / -1; background: #000; border: 1px solid #222; padding: 1rem; }
+.home .logo { grid-column: 1 / -1; margin: 0 0 1rem; }
 .tile { display: grid; place-items: center; padding: .75rem; text-align: center; aspect-ratio: 1; background: #111; border: 1px solid #222; font-size: 1.05rem; transition: border-color .15s, background .15s; }
 .tile:hover { border-color: var(--accent); background: #1a1a1a; }
 .tile:nth-of-type(even) { margin-top: 1.5rem; }
@@ -18,6 +18,12 @@ img { max-width: 100%; height: auto; display: block; }
 @media (min-width: 700px) {
   .home { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1.5rem; }
   .tile:nth-of-type(even) { margin-top: 3rem; }
+}
+
+@media (min-width: 900px) {
+  .home { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; max-width: 680px; align-content: center; min-height: calc(100svh - 7.5rem); }
+  .home .logo { grid-column: 2; grid-row: 2; align-self: center; margin: 0; font-size: 1.5rem; line-height: 1.25; }
+  .home .tile { margin-top: 0; }
 }
 
 /* Portadas: cuadrícula uniforme y centrada (2 en celular, 3 en PC) */
@@ -51,3 +57,36 @@ img { max-width: 100%; height: auto; display: block; }
 .descripcion p { margin: 0 0 1rem; white-space: pre-line; }
 .tile:has(img) { padding: 0; overflow: hidden; }
 .tile img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Detalle: textos largos sin desbordar */
+.album h1, .fila-titulo { overflow-wrap: anywhere; }
+.album .artista { margin: 0 0 .25rem; }
+.album .rol { margin: 0 0 1.25rem; color: var(--muted); }
+
+/* Producción: lista de filas */
+.lista-prod { list-style: none; margin: 0 auto; padding: 0; max-width: 860px; display: grid; gap: .75rem; }
+.fila { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: .25rem 1rem; align-items: center; padding: .6rem; background: #0c0c0c; border: 1px solid #222; transition: border-color .15s; }
+.fila:hover { border-color: var(--accent); }
+.fila img { width: 64px; height: 64px; object-fit: cover; grid-row: span 2; }
+.fila-texto { display: grid; }
+.fila-artista { color: var(--muted); font-size: .9rem; }
+.fila-rol { grid-column: 2; color: var(--muted); font-size: .85rem; }
+@media (min-width: 700px) {
+  .fila { grid-template-columns: 72px minmax(0, 1fr) minmax(0, 15rem); gap: 1.25rem; }
+  .fila img { width: 72px; height: 72px; grid-row: auto; }
+  .fila-rol { grid-column: auto; text-align: right; }
+}
+
+/* Videos: mosaico con miniaturas de YouTube */
+.videos { list-style: none; margin: 0 auto; padding: 0; max-width: 900px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem 1rem; }
+.videos img, .sin-mini { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: #111; display: block; }
+.v-titulo { display: block; margin-top: .4rem; font-size: .8rem; line-height: 1.3; overflow-wrap: anywhere; }
+.v-artista { display: block; font-size: .75rem; color: var(--muted); }
+.videos a:hover .v-titulo { color: var(--accent); }
+@media (min-width: 700px) { .videos { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2rem 1.5rem; } }
+
+/* Motivo (introducción) */
+.intro-pagina { font-size: 1.1rem; }
+.intro-pagina p { white-space: pre-line; text-align: justify; hyphens: auto; }
+
+@media (min-width: 900px) { .titulo { text-align: center; } }

@@ -1,0 +1,22 @@
+---
+// Página de detalle compartida por música, producción y proyectos alternos.
+// Todo es opcional salvo título y portada: lo que no exista, no se muestra.
+import { Image } from 'astro:assets';
+const { entrada, Content, volver } = Astro.props;
+const d = entrada.data;
+---
+<article class="album">
+  <Image src={d.portada} alt={`Portada de ${d.titulo}`} width={900} />
+  <div>
+    <h1>{d.titulo}{d.anio && <small> {d.anio}</small>}</h1>
+    {d.artista && <p class="artista">{d.artista}</p>}
+    {d.rol && <p class="rol">{d.rol}</p>}
+    <div class="descripcion"><Content /></div>
+    {d.links.length > 0 && (
+      <ul class="links">
+        {d.links.map((l) => <li><a href={l.url} target="_blank" rel="noopener">{l.plataforma}</a></li>)}
+      </ul>
+    )}
+    <a href={volver}>Volver</a>
+  </div>
+</article>

@@ -3,37 +3,36 @@ import { glob } from 'astro/loaders';
 
 const links = z.array(z.object({ plataforma: z.string(), url: z.string().url() }));
 
-// Música y proyectos alternos comparten estructura
+// Música, producción y proyectos alternos comparten estructura.
+// Solo `titulo` y `portada` son obligatorios; todo lo demás es opcional.
 const ficha = ({ image }: { image: () => any }) => z.object({
   titulo: z.string(),
-  orden: z.number().default(999), // 1 = primero
-  anio: z.number(),
   portada: image(),
-  links,
+  orden: z.number().default(999), // 1 = primero
+  anio: z.number().optional(),
+  artista: z.string().optional(),
+  rol: z.string().optional(),     // lo que hizo Edgar (producción)
+  links: links.default([]),
 });
 
-const albumes = defineCollection({
-  loader: glob({ pattern: '*.md', base: './src/content/albumes' }),
-  schema: ficha,
-});
+const coleccion = (carpeta: string) =>
+  defineCollection({
+    loader: glob({ pattern: '*.md', base: `./src/content/${carpeta}` }),
+    schema: ficha,
+  });
 
-const alternos = defineCollection({
-  loader: glob({ pattern: '*.md', base: './src/content/alternos' }),
-  schema: ficha,
-});
+const albumes = coleccion('albumes');
+const alternos = coleccion('alternos');
+const produccion = coleccion('produccion');
 
-const produccion = defineCollection({
-  loader: glob({ pattern: '*.json', base: './src/content/produccion' }),
-  schema: ({ image }) => z.object({
+const videos = defineCollection({
+  loader: glob({ pattern: '*.json', base: './src/content/videos' }),
+  schema: z.object({
     titulo: z.string(),
-    artista: z.string(),
-    anio: z.number(),
-    portada: image(),
-    roles: z.array(z.string()).default([]),
-    descripcion: z.string().optional(),
-    creditos: z.array(z.string()).default([]),
-    links: links.default([]),
+    url: z.string().url(),          // enlace de YouTube
+    artista: z.string().optional(),
+    orden: z.number().default(999),
   }),
 });
 
-export const collections = { albumes, alternos, produccion };
+export const collections = { albumes, alternos, produccion, videos };

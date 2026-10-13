@@ -1,0 +1,25 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { idYoutube } from '../lib/youtube';
+const videos = (await getCollection('videos')).sort((a, b) => a.data.orden - b.data.orden || a.data.titulo.localeCompare(b.data.titulo));
+---
+<BaseLayout titulo="Videos" descripcion="Videoclips y registros">
+  <h1 class="titulo">Videos</h1>
+  <ul class="videos">
+    {videos.map((v) => {
+      const id = idYoutube(v.data.url);
+      return (
+        <li>
+          <a href={v.data.url} target="_blank" rel="noopener noreferrer">
+            {id
+              ? <img src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`} alt="" width="480" height="360" loading="lazy" />
+              : <span class="sin-mini" />}
+            <span class="v-titulo">{v.data.titulo}</span>
+            {v.data.artista && <span class="v-artista">{v.data.artista}</span>}
+          </a>
+        </li>
+      );
+    })}
+  </ul>
+</BaseLayout>

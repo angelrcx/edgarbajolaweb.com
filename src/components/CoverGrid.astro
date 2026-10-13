@@ -7,7 +7,7 @@ const { items, base } = Astro.props;
     <li>
       <a href={`${base}/${it.id}`}>
         <Image src={it.data.portada} alt={`Portada de ${it.data.titulo}`} width={600} loading="lazy" />
-        <span>{it.data.titulo}, {it.data.anio}</span>
+        <span>{[it.data.titulo, it.data.anio].filter(Boolean).join(', ')}</span>
       </a>
     </li>
   ))}

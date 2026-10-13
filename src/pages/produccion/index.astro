@@ -1,10 +1,23 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import CoverGrid from '../../components/CoverGrid.astro';
-const proyectos = (await getCollection('produccion')).sort((a, b) => b.data.anio - a.data.anio);
+const proyectos = (await getCollection('produccion')).sort((a, b) => a.data.orden - b.data.orden || a.data.titulo.localeCompare(b.data.titulo));
 ---
 <BaseLayout titulo="Producción musical">
   <h1 class="titulo">Producción musical</h1>
-  <CoverGrid items={proyectos} base="/produccion" />
+  <ul class="lista-prod">
+    {proyectos.map((p) => (
+      <li>
+        <a class="fila" href={`/produccion/${p.id}`}>
+          <Image src={p.data.portada} alt="" width={160} loading="lazy" />
+          <span class="fila-texto">
+            <span class="fila-titulo">{p.data.titulo}</span>
+            {p.data.artista && <span class="fila-artista">{p.data.artista}</span>}
+          </span>
+          {p.data.rol && <span class="fila-rol">{p.data.rol}</span>}
+        </a>
+      </li>
+    ))}
+  </ul>
 </BaseLayout>

@@ -1,10 +1,13 @@
 ---
-titulo: "Proyecto alterno 2"
-orden: 2
+titulo: "2, METAL"
+orden: 1
 anio: 2022
-portada: "../../assets/alternos/alterno-2.svg"
+portada: "../../assets/alternos/metal2.png"
 links:
-  - { plataforma: "Sitio", url: "https://example.com" }
+  - { plataforma: "Spotify", url: "https://open.spotify.com/intl-es/album/0dZU3UV2zVkxh1lbp40NbA" }
+  - { plataforma: "Apple Music", url: "https://music.apple.com/us/album/2-single/6805285604" }
+  - { plataforma: "YouTube", url: "https://www.youtube.com/watch?v=4olDAT3fsTU&list=OLAK5uy_nCSSBr8v1eHbiBoel3gxG8ZHngQu79T6A" }
+  - { plataforma: "Tidal", url: "https://tidal.com/album/555555532/u" }
 ---
 
 Información del proyecto alterno.
