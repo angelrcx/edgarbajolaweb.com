@@ -1,32 +1,112 @@
 ---
-import { Image } from 'astro:assets';
+import { getImage } from 'astro:assets';
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import FondoVideo from '../components/FondoVideo.astro';
+import { idYoutube } from '../lib/youtube';
+import poemario from '../data/poemario.txt?raw';
 
-// Imágenes del menú: src/assets/menu/<imagen>.jpg (o webp, png)
-const imagenes = import.meta.glob<{ default: ImageMetadata }>('../assets/menu/*.{webp,png,jpg,jpeg,svg}', { eager: true });
-const buscar = (nombre: string) =>
-  Object.entries(imagenes).find(([ruta]) => ruta.includes(`/${nombre}.`))?.[1].default;
+// ── Interruptor de estilo ──────────────────────────────────────────────
+//  'imagenes'   → una obra en blanco y negro por sección (cambia en cada visita)
+//  'tipografia' → recuadros transparentes con borde blanco y el nombre al centro
+const ESTILO = 'imagenes' as string;
 
-const secciones = [
-  { href: '/intro', imagen: 'intro', label: 'Motivo' },
-  { href: '/musica', imagen: 'musica', label: 'Música' },
-  { href: '/produccion', imagen: 'produccion', label: 'Producción musical' },
-  { href: '/videos', imagen: 'videos', label: 'Videos' },
-  { href: '/fotografia', imagen: 'fotografia', label: 'Fotografía' },
-  { href: '/arte-grafico', imagen: 'arte-grafico', label: 'Arte gráfico' },
-  { href: '/poemario', imagen: 'poemario', label: 'Poemario' },
-  { href: '/proyectos-alternos', imagen: 'proyectos-alternos', label: 'Proyectos alternos' },
+// ── Fuente de las imágenes aleatorias: las carpetas de src/assets ─────
+const carpetas = {
+  musica: import.meta.glob<{ default: ImageMetadata }>('../assets/musica/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}', { eager: true }),
+  produccion: import.meta.glob<{ default: ImageMetadata }>('../assets/produccion/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}', { eager: true }),
+  fotografia: import.meta.glob<{ default: ImageMetadata }>('../assets/fotografia/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}', { eager: true }),
+  arte: import.meta.glob<{ default: ImageMetadata }>('../assets/arte-grafico/*/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}', { eager: true }),
+  alternos: import.meta.glob<{ default: ImageMetadata }>('../assets/alternos/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}', { eager: true }),
+};
+
+// Versión ligera (500 px, WebP) de cada imagen para el recuadro
+const ligeras = async (mods: Record<string, { default: ImageMetadata }>) =>
+  Promise.all(Object.values(mods).map(async (m) => (await getImage({ src: m.default, width: 500, format: 'webp' })).src));
+
+// Videos: miniaturas de YouTube
+const videos = await getCollection('videos');
+const miniaturasVideo = videos
+  .map((v) => idYoutube(v.data.url))
+  .filter(Boolean)
+  .map((id) => `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`);
+
+// Textos de vista previa. Motivo: cámbialo aquí si cambias el texto de /intro.
+const motivo = 'Soy un poco errático al momento de publicar lo que hago, y las redes sociales no ayudan. Con el algoritmo actual, subes algo a Instagram y, si no llama la atención…';
+const versos = poemario.replace(/\r\n/g, '\n').split('\n').filter((l) => l.trim() && !l.startsWith('# ')).slice(0, 6);
+
+// El orden de esta lista es el orden de lectura (el título ocupa el centro).
+const cuadros = [
+  { href: '/intro', nombre: 'Motivo', tipo: 'motivo', fuentes: [] as string[] },
+  { href: '/musica', nombre: 'Música', tipo: 'obras', fuentes: await ligeras(carpetas.musica) },
+  { href: '/produccion', nombre: 'Producción musical', tipo: 'obras', fuentes: await ligeras(carpetas.produccion) },
+  { href: '/videos', nombre: 'Videos', tipo: 'obras', fuentes: miniaturasVideo },
+  { href: '/fotografia', nombre: 'Fotografía', tipo: 'obras', fuentes: await ligeras(carpetas.fotografia) },
+  { href: '/arte-grafico', nombre: 'Arte gráfico', tipo: 'obras', fuentes: await ligeras(carpetas.arte) },
+  { href: '/poemario', nombre: 'Poemario', tipo: 'poemario', fuentes: [] as string[] },
+  { href: '/proyectos-alternos', nombre: 'Proyectos alternos', tipo: 'obras', fuentes: await ligeras(carpetas.alternos) },
 ];
+const conImagenes = ESTILO === 'tipografia';
 ---
 <BaseLayout titulo="Edgar Bajo la Web" bar={false}>
   <FondoVideo />
-  <section class="home">
-    <h1 class="logo">Edgar Bajo la Web</h1>
-    {secciones.map((s) => (
-      <a class="tile" href={s.href}>
-        {buscar(s.imagen) ? <Image src={buscar(s.imagen)!} alt={s.label} width={600} /> : s.label}
+  <a class="contacto-link" href="/contacto">Contacto</a>
+  <section class={`mosaico ${conImagenes ? 'con-imagenes' : 'solo-texto'}`}>
+    <h1 class="mosaico-titulo">Edgar Bajo la Web</h1>
+    {cuadros.map((c) => (
+      <a class={`cuadro cuadro--${c.tipo}`} href={c.href}>
+        {conImagenes && c.tipo === 'motivo' && <span class="texto-previo">{motivo}</span>}
+        {conImagenes && c.tipo === 'poemario' && (
+          <span class="texto-previo">{versos.map((v) => <Fragment>{v}<br /></Fragment>)}</span>
+        )}
+        {conImagenes && c.fuentes.length > 0 && (
+          <>
+            <img data-fuentes={JSON.stringify(c.fuentes)} alt="" />
+            <noscript><img src={c.fuentes[0]} alt="" /></noscript>
+          </>
+        )}
+        <span class="nombre">{c.nombre}</span>
       </a>
     ))}
   </section>
+
+  {conImagenes && (
+    <script is:inline>
+      // Una imagen distinta de cada sección en cada visita
+      document.querySelectorAll('img[data-fuentes]').forEach(function (img) {
+        var lista = JSON.parse(img.getAttribute('data-fuentes'));
+        img.onerror = function () {
+          if (img.src.indexOf('maxresdefault') > -1) { img.src = img.src.replace('maxresdefault', 'hqdefault'); return; }
+          img.onerror = null;
+          img.style.display = 'none'; // si no carga, queda el recuadro con el nombre
+        };
+        img.src = lista[Math.floor(Math.random() * lista.length)];
+      });
+    </script>
+  )}
 </BaseLayout>
+
+<style is:global>
+  /* Mosaico 3×3 con el título al centro: igual en celular y en PC */
+  .mosaico { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; max-width: 680px; margin: 0 auto; align-content: center; min-height: calc(100svh - 9.5rem); }
+  @media (min-width: 700px) { .mosaico { gap: 1rem; } }
+  .mosaico-titulo { grid-column: 2; grid-row: 2; align-self: center; justify-self: center; text-align: center; margin: 0; font-size: clamp(.95rem, 3.6vw, 1.5rem); font-weight: 400; line-height: 1.2; }
+
+  .cuadro { position: relative; display: block; aspect-ratio: 1; overflow: hidden; background: #111; border: 1px solid #2a2a2a; transition: border-color .15s, background .15s; }
+  .cuadro:hover, .cuadro:focus-visible { border-color: var(--accent); }
+
+  /* Estilo "imagenes": obra en blanco y negro con el nombre abajo a la izquierda */
+  .con-imagenes .cuadro img { width: 100%; height: 100%; object-fit: cover; display: block; filter: grayscale(1) contrast(1.05); }
+  .con-imagenes .nombre { position: absolute; left: 0; right: 0; bottom: 0; padding: 1.4rem .5rem .4rem; font-size: clamp(.7rem, 2.6vw, 1rem); line-height: 1.15; text-align: left; color: #f4efe4; background: linear-gradient(transparent, rgba(0, 0, 0, .85)); }
+  .cuadro--motivo { background: #000; }
+  .texto-previo { position: absolute; inset: 0; padding: .6rem; overflow: hidden; font-size: clamp(.45rem, 1.7vw, .7rem); line-height: 1.45; color: #ddd; }
+  .cuadro--poemario { background: #f4efe4; }
+  .cuadro--poemario .texto-previo { color: #161616; }
+  .con-imagenes .cuadro--poemario .nombre { color: #161616; background: linear-gradient(transparent, #f4efe4 65%); }
+
+  /* Estilo "tipografia": borde blanco, fondo transparente, nombre blanco centrado */
+  .solo-texto .cuadro { display: grid; place-items: center; background: rgba(0, 0, 0, .25); border-color: #f4efe4; text-align: center; }
+  .solo-texto .nombre { padding: .4rem; font-size: clamp(.8rem, 2.8vw, 1.35rem); line-height: 1.2; color: #f4efe4; }
+  .solo-texto .cuadro:hover, .solo-texto .cuadro:focus-visible { background: #f4efe4; }
+  .solo-texto .cuadro:hover .nombre, .solo-texto .cuadro:focus-visible .nombre { color: #161616; }
+</style>

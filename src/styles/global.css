@@ -21,7 +21,7 @@ img { max-width: 100%; height: auto; display: block; }
 }
 
 @media (min-width: 900px) {
-  .home { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; max-width: 680px; align-content: center; min-height: calc(100svh - 7.5rem); }
+  .home { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; max-width: 680px; align-content: center; min-height: calc(100svh - 9.5rem); }
   .home .logo { grid-column: 2; grid-row: 2; align-self: center; margin: 0; font-size: 1.5rem; line-height: 1.25; }
   .home .tile { margin-top: 0; }
 }
@@ -91,3 +91,14 @@ img { max-width: 100%; height: auto; display: block; }
 .intro-pagina p { white-space: pre-line; text-align: justify; hyphens: auto; }
 
 @media (min-width: 900px) { .titulo { text-align: center; } }
+
+/* Contacto */
+.contacto-link { display: block; width: fit-content; margin: 0 auto .75rem; padding: .35rem .75rem; font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; color: #ffd23f; }
+.contacto-link:hover, .contacto-link:focus-visible { text-decoration: underline; text-underline-offset: 4px; }
+.contacto { max-width: 40rem; margin: 0 auto; text-align: center; }
+.contacto .titulo { margin-bottom: 2rem; }
+.correo { font-size: clamp(1.1rem, 4.4vw, 1.8rem); overflow-wrap: anywhere; user-select: all; margin: 0 0 1.5rem; }
+.contacto-acciones { display: flex; flex-wrap: wrap; gap: .75rem; justify-content: center; }
+.contacto-acciones button, .contacto-acciones a { min-height: 44px; padding: .6rem 1.2rem; background: none; border: 1px solid #444; color: var(--fg); font: inherit; cursor: pointer; display: inline-flex; align-items: center; }
+.contacto-acciones button:hover, .contacto-acciones a:hover { border-color: var(--accent); }
+.aviso { min-height: 1.6em; margin: 1rem 0 0; color: var(--muted); font-size: .9rem; }

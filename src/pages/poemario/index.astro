@@ -1,7 +1,65 @@
 ---
+import '@fontsource-variable/literata';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+// El poemario vive en src/data/poemario.txt: cada línea del archivo es un párrafo del Word,
+// una línea vacía es un párrafo vacío, y las líneas que empiezan con "# " son los títulos.
+import texto from '../../data/poemario.txt?raw';
+
+const lineas = texto.replace(/\r\n/g, '\n').replace(/\n$/, '').split('\n');
+let n = 0;
+const bloques = lineas.map((l) => {
+  if (l.startsWith('# ')) return { tipo: 'titulo', texto: l.slice(2).trim(), id: `poema-${++n}` };
+  if (l.trim() === '') return { tipo: 'vacio', texto: '' };
+  return { tipo: 'linea', texto: l };
+});
+const indice = bloques.filter((b) => b.tipo === 'titulo');
 ---
-<BaseLayout titulo="Poemario">
-  <h1 class="titulo">Poemario</h1>
-  <p class="texto">Próximamente.</p>
+<BaseLayout titulo="Poemario" descripcion="Poemario digital">
+  <article class="poemario">
+    <h1 class="p-cabecera">Poemario</h1>
+
+    <details class="p-indice">
+      <summary>Índice</summary>
+      <ol>
+        {indice.map((b) => <li><a href={`#${b.id}`}>{b.texto}</a></li>)}
+      </ol>
+    </details>
+
+    <div class="p-texto">
+      {bloques.map((b) =>
+        b.tipo === 'titulo' ? <h2 id={b.id}>{b.texto}</h2>
+        : b.tipo === 'vacio' ? <p class="vacio" aria-hidden="true"></p>
+        : <p>{b.texto}</p>
+      )}
+    </div>
+  </article>
 </BaseLayout>
+
+<style is:global>
+  /* Papel hueso con tinta negra: toda la página usa estos colores */
+  html:root { --bg: #f4efe4; --fg: #161616; --muted: #5d574b; --accent: #8c1d2a; }
+  html:root, html:root body { background: var(--bg); color: var(--fg); }
+  html:root .dock { background: rgba(244, 239, 228, .94); border-color: #cdc5b4; color: var(--fg); }
+  ::selection { background: #e3d9bf; }
+
+  .poemario {
+    max-width: 38rem; margin: 0 auto; padding: 1rem 0 5rem;
+    font-family: 'Literata Variable', Georgia, 'Times New Roman', serif;
+    font-size: clamp(1.05rem, .98rem + .4vw, 1.2rem);
+    line-height: 1.45;
+    hyphens: none;
+  }
+  .p-cabecera { font-size: .9rem; font-weight: 400; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 1rem; }
+
+  .p-indice { margin: 0 0 3rem; font-size: .9rem; color: var(--muted); }
+  .p-indice summary { cursor: pointer; width: fit-content; }
+  .p-indice ol { margin: .75rem 0 0; padding-left: 1.5rem; columns: 2; }
+  .p-indice a:hover { color: var(--fg); text-decoration: underline; }
+
+  /* Mismo ritmo que el Word: cada párrafo deja 8 pt (0.73 em) debajo y
+     un párrafo vacío ocupa una línea completa. */
+  .p-texto p, .p-texto h2 { margin: 0 0 .73em; font-size: 1em; }
+  .p-texto h2 { font-weight: 700; scroll-margin-top: 1.5rem; }
+  .p-texto p { padding-left: 1.5em; text-indent: -1.5em; } /* si una línea larga se parte, la continuación se sangra */
+  .p-texto .vacio { height: 1.45em; padding: 0; text-indent: 0; }
+</style>

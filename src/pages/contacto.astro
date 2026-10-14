@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const correo = 'yazayazayazayaza.m@gmail.com';
+---
+<BaseLayout titulo="Contacto" descripcion="Contacto">
+  <section class="contacto">
+    <h1 class="titulo">Contacto</h1>
+    <p class="correo" id="correo">{correo}</p>
+    <div class="contacto-acciones">
+      <button type="button" id="copiar" data-correo={correo}>Copiar correo</button>
+      <a href={`mailto:${correo}`}>Escribir</a>
+    </div>
+    <p class="aviso" id="aviso" role="status" aria-live="polite"></p>
+  </section>
+</BaseLayout>
+
+<script>
+  const boton = document.getElementById('copiar') as HTMLButtonElement;
+  const aviso = document.getElementById('aviso')!;
+  const correo = document.getElementById('correo')!;
+
+  async function copiar(texto: string) {
+    try {
+      await navigator.clipboard.writeText(texto);
+      return true;
+    } catch {
+      // Plan B para navegadores sin permiso de portapapeles
+      const r = document.createRange();
+      r.selectNodeContents(correo);
+      const s = window.getSelection()!;
+      s.removeAllRanges();
+      s.addRange(r);
+      return document.execCommand('copy');
+    }
+  }
+
+  boton.addEventListener('click', async () => {
+    const ok = await copiar(boton.dataset.correo!);
+    aviso.textContent = ok ? 'Correo copiado' : 'No se pudo copiar; selecciónalo y cópialo manualmente';
+    setTimeout(() => (aviso.textContent = ''), 2500);
+  });
+</script>
